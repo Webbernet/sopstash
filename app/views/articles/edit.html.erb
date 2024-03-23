@@ -1,0 +1,22 @@
+<%= link_to 'Back', article_path(@article) %>
+
+<h1>
+  <%= @article.title %>
+</h1>
+
+<%= @latest_version.pid %>
+
+<%= form_with model: @form, url: article_article_versions_path(@article) do |form| %>
+
+  <div>
+    <h2>Version Changes</h2>
+    <div class="field">
+      <%= form.label :pid, "Version" %>
+      <%= form.text_field :pid, id: :pid%>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Make Change" %>
+  </div>
+<% end %>

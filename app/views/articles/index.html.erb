@@ -1,0 +1,12 @@
+<h1>Article#index</h1>
+
+
+<%= link_to "Create Article", new_article_path  %>
+
+<% Article.all.each do |article| %>
+  <div>
+  <%= link_to article_path(article) do %>
+    <%= article.title %>
+  <% end %>
+  </div>
+<% end %>

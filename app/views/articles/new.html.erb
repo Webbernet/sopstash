@@ -1,0 +1,26 @@
+Create Article
+
+<%= form_with model: @article, url: articles_path do |form| %>
+
+  <div class="main-content">
+    <div class="main-content">
+      <div id="request-form">
+        <div class="field">
+          <%= form.label :title, "Title" %>
+          <%= form.text_field :title, id: :title%>
+        </div>
+        <%= form.fields_for :article_versions do |version_form| %>
+
+          <div class="field">
+            <%= version_form.label :file, "file" %>
+            <%= version_form.file_field :file %>
+          </div>
+
+          <div class="actions">
+            <%= form.submit "Save" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

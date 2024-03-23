@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sopstash_development
+
+  web:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+      args:
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
+        - FONT_AWESOME_TOKEN=${FONT_AWESOME_TOKEN}
+    command: bin/dev
+    volumes:
+      - .:/sopstash
+    working_dir: /sopstash
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://postgres:password@db:5432/sopstash_development
+      TEST_DATABASE_URL: postgres://postgres:password@db:5432/sopstash_test
+      MAILGUN_API_KEY: ${MAILGUN_API_KEY}
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
