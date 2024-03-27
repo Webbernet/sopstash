@@ -1,11 +1,16 @@
-<h1>Article#index</h1>
+<h1>Documents</h1>
 
-<%= link_to "Upload Article", new_article_path  %>
+<%= link_to "Add Document", new_article_path  %>
 
-<% @articles.each do |article| %>
-  <div>
-  <%= link_to article_path(article) do %>
-    <%= article.title %>
+
+
+<ul>
+  <% @articles.each do |article| %>
+    <li>
+      <%= link_to article_path(article) do %>
+        <%= article.title %>
+      <% end %>
+    </li>
   <% end %>
-  </div>
-<% end %>
+</ul>
+

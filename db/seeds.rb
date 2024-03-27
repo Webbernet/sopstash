@@ -7,6 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-Article.create!(title: "Code of conduct", content: "Hi")
-Article.create!(title: "Privacy policy", content: "Hi")
-Article.create!(title: "Code Guidelines", content: "Hi")
+#
+#
+#
+
+Rails.logger.info 'Seed Started'
+
+User.create!(email: 'a@b.com', password: 'password')
+
+Rails.logger.info 'Seed Complete'
