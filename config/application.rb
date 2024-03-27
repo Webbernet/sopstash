@@ -23,5 +23,6 @@ module Sopstash
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.active_storage.multiple_file_field_include_hidden = false
   end
 end

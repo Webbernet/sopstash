@@ -1,13 +1,13 @@
 module ArticleVersions
   class CreateForm
     include ActiveModel::Model
-    attr_accessor :article, :pid, :user, :notes
+    attr_accessor :article, :pid, :notes, :document
 
     def save
       article.article_versions.create!(
         pid:,
-        user:,
-        notes:
+        notes:,
+        document:
       )
     end
   end

@@ -1,0 +1,11 @@
+Hi,
+
+<% if @is_new %>
+  Please review a new policy '<%= @sop_name %>'.
+<% else %>
+  Please review new version of the policy '<%= @sop_name %>'.
+<% end %>
+
+<%= link_to 'View', agreement_url(pid: @agreement.pid) %>
+
+

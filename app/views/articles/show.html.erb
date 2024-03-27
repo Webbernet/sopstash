@@ -4,6 +4,27 @@
 
 <%= @latest_version.pid %>
 
-Edit
+<%= button_to 'Archive', article_path, method: :delete %>
 
-<%= link_to "Edit", edit_article_path(@article) %>
+<% if @latest_version.document.attached? %>
+  <iframe src="<%= rails_blob_url(@latest_version.document, disposition: :inline) %>" width="600" height="400" style="border:none;"></iframe>
+<% end %>
+
+<h3>Staff</h3>
+<ul>
+  <% @latest_version.agreements.each do |agreement| %>
+    <li><%= agreement.staff.email %> - Agreed? <%= agreement.agreed %></li>
+  <% end %>
+</ul>
+
+
+<%= form_with url: agreements_path(av: @latest_version.id) do |form| %>
+  <div>
+    <%= form.label 'Add emails:' %>
+    <%= form.text_field :emails %>
+  </div>
+  <%= form.submit 'Add' %>
+<% end %>
+
+<%= link_to "Add new Version", edit_article_path(@article) %>
+

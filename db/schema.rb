@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_23_052447) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_27_010713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_23_052447) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "agreements", force: :cascade do |t|
+    t.bigint "staff_id", null: false
+    t.bigint "article_version_id", null: false
+    t.boolean "agreed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "pid", null: false
+    t.datetime "agreed_at"
+    t.index ["article_version_id"], name: "index_agreements_on_article_version_id"
+    t.index ["staff_id"], name: "index_agreements_on_staff_id"
+  end
+
   create_table "article_versions", force: :cascade do |t|
     t.string "pid", null: false
     t.text "notes"
@@ -55,9 +67,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_23_052447) do
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_archived", default: false, null: false
+  end
+
+  create_table "staffs", force: :cascade do |t|
+    t.string "email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "agreements", "article_versions"
+  add_foreign_key "agreements", "staffs"
   add_foreign_key "article_versions", "articles"
 end

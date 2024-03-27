@@ -1,26 +1,13 @@
 Create Article
 
-<%= form_with model: @article, url: articles_path do |form| %>
-
-  <div class="main-content">
-    <div class="main-content">
-      <div id="request-form">
-        <div class="field">
-          <%= form.label :title, "Title" %>
-          <%= form.text_field :title, id: :title%>
-        </div>
-        <%= form.fields_for :article_versions do |version_form| %>
-
-          <div class="field">
-            <%= version_form.label :file, "file" %>
-            <%= version_form.file_field :file %>
-          </div>
-
-          <div class="actions">
-            <%= form.submit "Save" %>
-          </div>
-        <% end %>
-      </div>
+<div data-controller="article-upload">
+  <%= form_with url: articles_path, id: 'file-upload-form' do |form| %>
+    <%= form.file_field :files, multiple: true, name: 'files[]', id: 'file-input', data: {article_upload_target: 'input'} %>
+    <div data-article-upload-target="fileNamesContainer"></div>
+    <div data-article-upload-target="staffContainer" style="display: none">
+      <%= form.label 'List emails:' %>
+      <%= form.text_field :emails %>
     </div>
-  </div>
-<% end %>
+    <%= form.submit %>
+  <% end %>
+</div>

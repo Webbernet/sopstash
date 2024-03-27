@@ -37,6 +37,11 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
-
+  
+  mailcatcher:
+    image: dockage/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
 volumes:
   postgres_data:
