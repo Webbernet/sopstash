@@ -1,0 +1,11 @@
+<%= link_to 'Back', articles_path %>
+
+<h1>Pending Agreements</h1>
+
+<ul>
+  <% @agreements.each do |agreement| %>
+    <li>
+      <%= agreement.staff.email %> - <%= agreement.article_version.article.title %> - Sent at: <%= agreement.created_at %>
+    </li>
+  <% end %>
+</ul>

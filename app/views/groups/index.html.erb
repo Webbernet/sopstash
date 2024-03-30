@@ -1,0 +1,17 @@
+<%= link_to 'Back', articles_path %>
+<h1>Groups</h1>
+
+<%= form_with model: @group, url: groups_path do |form| %>
+  <%= form.label 'Group name:' %>
+  <%= form.text_field :title %>
+
+  <%= form.submit 'Create' %>
+<% end %>
+
+<ul>
+  <% @groups.each do |group| %>
+    <li><%= link_to group.title, group_path(group) %>
+    </li>
+  <% end %>
+</ul>
+

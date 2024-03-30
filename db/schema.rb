@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_27_065409) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_30_062841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_065409) do
     t.string "pid", null: false
     t.datetime "agreed_at"
     t.index ["article_version_id"], name: "index_agreements_on_article_version_id"
+    t.index ["staff_id", "article_version_id"], name: "index_agreements_on_staff_id_and_article_version_id", unique: true
     t.index ["staff_id"], name: "index_agreements_on_staff_id"
   end
 
@@ -68,6 +69,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_065409) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_archived", default: false, null: false
+    t.bigint "group_id"
+    t.index ["group_id"], name: "index_articles_on_group_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "staff_groups", force: :cascade do |t|
+    t.bigint "staff_id", null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_staff_groups_on_group_id"
+    t.index ["staff_id"], name: "index_staff_groups_on_staff_id"
   end
 
   create_table "staffs", force: :cascade do |t|
@@ -90,4 +108,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_065409) do
   add_foreign_key "agreements", "article_versions"
   add_foreign_key "agreements", "staffs"
   add_foreign_key "article_versions", "articles"
+  add_foreign_key "articles", "groups"
+  add_foreign_key "staff_groups", "groups"
+  add_foreign_key "staff_groups", "staffs"
 end

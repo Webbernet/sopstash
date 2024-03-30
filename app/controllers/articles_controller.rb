@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
   def index
     @articles = Article.all.not_archived
+    @pending_documents_count = Agreement.where(agreed: false).count
   end
 
   def show
@@ -11,7 +12,18 @@ class ArticlesController < ApplicationController
   def edit
     @article = Article.find(params[:id])
     @latest_version = @article.article_versions.order(created_at: :desc).first
-    @form = ArticleVersions::CreateForm.new(article: @article)
+  end
+
+  def update
+    @article = Article.find(params[:id])
+    @group = Group.find(params[:article][:group_id])
+    @article.update!(group: @group)
+
+    @group.staffs.each do |staff|
+      AddEmailsToArticle.new(emails: [staff.email], article: @article).call
+    end
+
+    redirect_to articles_path(@article)
   end
 
   def new
@@ -26,15 +38,8 @@ class ArticlesController < ApplicationController
       params['files'].each_with_index do |file, index|
         article = Article.create!(title: params['file_names'][index.to_s])
         article_version = ArticleVersion.create!(pid: '1.0', document: file, article:)
-        agreements = emails.map do |email|
-          staff = Staff.find_or_create_by!(email:)
-          agreements << Agreement.create!(staff:, article_version:)
-        end
+        AddEmailsToArticle.new(emails:, article:).call
       end
-    end
-
-    agreements.flatten.each do |agreement| 
-     StaffMailer.sop_email(agreement, true).deliver_now
     end
 
     redirect_to articles_path
@@ -45,5 +50,16 @@ class ArticlesController < ApplicationController
     @article.is_archived = true
     @article.save
     redirect_to articles_path
+  end
+
+
+  def articles
+    @group = Group.find(params[:group_id])
+    article = Article.find(params[:article_id])
+    @new_group_article = @group.article_groups.create!(article: article)
+
+    AddEmailsToArticle.new(emails: @group.staffs.map(&:email), article:).call
+
+    redirect_to group_path(@group)
   end
 end

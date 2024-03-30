@@ -2,10 +2,13 @@ class AgreementsController < ApplicationController
  skip_before_action :require_login, only: [:show, :update]
 
   def show
+
     @agreement = Agreement.find_by(pid: params[:pid])
     if  @agreement.article_version.article.is_archived
       render html: 'Document no longer exists.'
     end
+
+    @agreements = @agreement.staff.agreements
   end
 
   def create

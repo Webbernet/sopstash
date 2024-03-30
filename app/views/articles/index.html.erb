@@ -1,8 +1,16 @@
 <h1>Documents</h1>
 
+<div>
+  <%= link_to "Groups", groups_path  %>
+</div>
+
+<% if @pending_documents_count > 0 %>
+  <div>
+    There is <%= link_to "#{@pending_documents_count} pending agreement(s).", pending_agreements_report_path %>
+  </div>
+<% end %>
+
 <%= link_to "Add Document", new_article_path  %>
-
-
 
 <ul>
   <% @articles.each do |article| %>

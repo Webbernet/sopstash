@@ -7,9 +7,16 @@ Rails.application.routes.draw do
   post 'login' => "user_sessions#create"
   post 'logout' => 'user_sessions#destroy', :as => :logout
 
-  resources :articles, only: %i[index new create show edit destroy] do
+  resources :articles do
     resources :article_versions
+    put :edit_version
   end
 
   resources :agreements, param: :pid
+
+  resources :groups do
+    post :staff
+  end
+
+  resource :pending_agreements_report, only: [:show]
 end

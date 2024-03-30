@@ -1,23 +1,43 @@
-<div>
-Please agree to:
-<%= @agreement.article_version.article.title %>
-</div>
+<style>
+</style>
 
-
-<iframe src="<%= rails_blob_url(@agreement.article_version.document, disposition: :inline) %>" width="600" height="400" style="border:none;"></iframe>
-
-<div>
-  <%= @agreement.article_version.pid %>
-</div>
-
-<div>
-  <%= @agreement.article_version.notes %>
+<div style="display: flex; justify-content: space-between; margin-left: auto; margin-right: auto; max-width: 60rem">
+  <div class="sidebar">
+    <% @agreements.each do |agreement| %>
+      <%= link_to agreement_path(pid: agreement.pid) do %>
+        <li>
+          <%= agreement.article_version.article.title %>
+        </li>
+      <% end %>
+    <% end %>
   </div>
 
-  <% if !@agreement.agreed %>
-<%= form_with url: agreement_path, method: :put do |form| %>
-<%= form.submit 'I agree' %>
-<% end %>
-<% else %>
-  You agreed to this on <%= @agreement.agreed_at %>.
-<% end %>
+  <div class="content">
+    <div class="content">
+      Please agree to:
+      <%= @agreement.article_version.article.title %>
+    </div>
+
+
+    <iframe src="<%= rails_blob_url(@agreement.article_version.document, disposition: :inline) %>" width="600" height="400" style="border:none;"></iframe>
+
+    <div>
+      <%= @agreement.article_version.pid %>
+    </div>
+
+    <div>
+      <%= @agreement.article_version.notes %>
+    </div>
+
+    <% if !@agreement.agreed %>
+      <%= form_with url: agreement_path, method: :put do |form| %>
+        <%= form.submit 'I agree' %>
+      <% end %>
+    <% else %>
+      You agreed to this on <%= @agreement.agreed_at %>.
+    <% end %>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,22 @@
+<%= link_to 'Back', groups_path %>
+
+<h1>
+  <%= @group.title %>
+</h1>
+
+
+<%= form_with model: @new_group_staff, url: group_staff_path(group_id: @group.id) do |form| %>
+  <%= form.label 'Email:' %>
+  <%= form.email_field :email %>
+
+  <%= form.submit 'Add' %>
+<% end %>
+
+
+<ul>
+  <% @staff.each do |staff| %>
+    <li><%= staff.email %></li>
+<% end %>
+</ul>
+
+

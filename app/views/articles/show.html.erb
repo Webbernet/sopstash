@@ -4,6 +4,8 @@
 
 <%= @latest_version.pid %>
 
+<%= link_to "Add new Version", edit_article_article_version_path(@article) %>
+
 <%= button_to 'Archive', article_path, method: :delete %>
 
 <% if @latest_version.document.attached? %>
@@ -17,7 +19,6 @@
   <% end %>
 </ul>
 
-
 <%= form_with url: agreements_path(av: @latest_version.id) do |form| %>
   <div>
     <%= form.label 'Add emails:' %>
@@ -26,5 +27,9 @@
   <%= form.submit 'Add' %>
 <% end %>
 
-<%= link_to "Add new Version", edit_article_path(@article) %>
+<%= form_with model: @article, url: article_path(@article), method: :put do |form| %>
+  <%= form.label 'Select Group:' %>
+  <%= form.collection_select :group_id, Group.all, :id, :title, {prompt: 'Please Select' }  %>
+  <%= form.submit 'Save' %>
+<% end %>
 
